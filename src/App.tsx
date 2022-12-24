@@ -1,34 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+// project import
+import Routes from '@fruity/routes';
+import ThemeCustomization from '@fruity/themes';
+import Locales from '@fruity/components/Locales';
+import ScrollTop from '@fruity/components/ScrollTop';
+import Snackbar from '@fruity/components/@extended/Snackbar';
 
-function App() {
-  const [count, setCount] = useState(0)
+// auth provider
+import { JWTProvider as AuthProvider } from '@fruity/contexts/JWTContext';
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+// ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 
-export default App
+const App = () => (
+  <ThemeCustomization>
+      <Locales>
+        <ScrollTop>
+          <AuthProvider>
+            <>
+              <Routes />
+              <Snackbar />
+            </>
+          </AuthProvider>
+        </ScrollTop>
+      </Locales>
+  </ThemeCustomization>
+);
+
+export default App;
