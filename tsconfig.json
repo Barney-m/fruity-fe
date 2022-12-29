@@ -16,7 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "downlevelIteration": true,
-    "types": ["node", "webpack-env"],
     "typeRoots": ["./types"],
     "paths": {
       "@fruity/*": ["./src/*"]

@@ -7,6 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import menu from './menu';
 import snackbar from './snackbar';
 import cartReducer from './cart';
+import product from './product';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -17,10 +18,11 @@ const reducers = combineReducers({
     {
       key: 'cart',
       storage,
-      keyPrefix: 'fruity'
+      keyPrefix: 'fruity-'
     },
     cartReducer
   ),
+  product,
 });
 
 export default reducers;

@@ -54,7 +54,7 @@ const Default = (colors: PalettesProps): PaletteThemeProps => {
       700: customGreen[700],
       darker: customGreen[800],
       900: customGreen[900],
-      contrastText: '#000'
+      contrastText
     },
     secondary: {
       lighter: greyColors[100],

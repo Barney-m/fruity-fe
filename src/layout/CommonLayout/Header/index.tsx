@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 // material-ui
 import AppBar, { AppBarProps } from '@mui/material/AppBar';
@@ -26,9 +26,11 @@ import {
 // project import
 import config from '@fruity/config';
 import IconButton from '@fruity/components/@extended/IconButton';
-import AnimateButton from '@fruity/components/@extended/AnimateButton';
 import Logo from '@fruity/components/logo';
 import Navigation from './Navigation';
+
+// third-party
+import _ from 'lodash';
 
 // assets
 import { MenuOutlined, LineOutlined } from '@ant-design/icons';
@@ -62,7 +64,27 @@ interface Props {
 
 const Header = ({ handleDrawerOpen, layout = 'landing', ...others }: Props) => {
   const theme = useTheme();
+  const location = useLocation();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
+
+  /**
+   * Document Title
+   */
+  useEffect(() => {
+    const currentRoute = location.pathname;
+
+    document.title = _.startCase(currentRoute?.split('-').join(' '));
+
+    if ('/' === currentRoute) {
+      document.title = 'Home';
+    }
+
+    document.title += ' | Fruity';  
+  }, [location]);
+  
+  /**
+   * Toggle Mobile View Drawer
+   */
   const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
 
   /** Method called on multiple components with different event types */
@@ -75,7 +97,7 @@ const Header = ({ handleDrawerOpen, layout = 'landing', ...others }: Props) => {
 
   // app-bar params
   const appBar: AppBarProps = {
-    position: 'fixed',
+    position: 'sticky',
     color: 'inherit',
     elevation: 0,
     sx: {
@@ -109,7 +131,7 @@ const Header = ({ handleDrawerOpen, layout = 'landing', ...others }: Props) => {
             <Stack
               direction="row"
               sx={{
-                '& .header-link': { px: 1, '&:hover': { color: theme.palette.primary.main } },
+                '& .header-link': { px: 1, '&:hover': { color: theme.palette.primary[700], textDecoration: 'none' } },
                 display: { xs: 'none', md: 'block' }
               }}
               spacing={2}

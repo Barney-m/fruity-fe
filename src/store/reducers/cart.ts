@@ -127,7 +127,7 @@ export default slice.reducer;
 // ----------------------------------------------------------------------
 
 export function addProduct(product: ProductCardProps) {
-  return async () => {
+  return () => {
     try {
       dispatch(slice.actions.addProductSuccess(product));
     } catch (error) {
@@ -137,7 +137,7 @@ export function addProduct(product: ProductCardProps) {
 }
 
 export function removeProduct(id: string | number | undefined, products: ProductCardProps[]) {
-  return async () => {
+  return () => {
     try {
       let product: ProductCardProps | null = null;
       for (const x of products) {
@@ -159,7 +159,7 @@ export function removeProduct(id: string | number | undefined, products: Product
 }
 
 export function updateProduct(id: string | number | undefined, quantity: number, products: ProductCardProps[]) {
-  return async () => {
+  return () => {
     try {
       let product: ProductCardProps | null = null;
       for (const x of products) {
@@ -199,7 +199,7 @@ export function setBackStep() {
 }
 
 export function setBillingAddress(address: Address | null) {
-  return async () => {
+  return () => {
     try {
       dispatch(slice.actions.setBillingAddressSuccess(address));
     } catch (error) {
@@ -209,7 +209,7 @@ export function setBillingAddress(address: Address | null) {
 }
 
 export function setDiscount(code: string, total: number) {
-  return async () => {
+  return () => {
     try {
       dispatch(slice.actions.setDiscountSuccess(code));
     } catch (error) {
@@ -219,7 +219,7 @@ export function setDiscount(code: string, total: number) {
 }
 
 export function setShippingCharge(charge: string, shipping: number) {
-  return async () => {
+  return () => {
     try {
       dispatch(slice.actions.setShippingChargeSuccess(charge));
     } catch (error) {
@@ -229,7 +229,7 @@ export function setShippingCharge(charge: string, shipping: number) {
 }
 
 export function setPaymentMethod(method: string) {
-  return async () => {
+  return () => {
     try {
       dispatch(slice.actions.setPaymentMethodSuccess(method));
     } catch (error) {
@@ -239,7 +239,7 @@ export function setPaymentMethod(method: string) {
 }
 
 export function setPaymentCard(card: string) {
-  return async () => {
+  return () => {
     try {
       dispatch(slice.actions.setPaymentCardSuccess(card));
     } catch (error) {
@@ -249,7 +249,7 @@ export function setPaymentCard(card: string) {
 }
 
 export function resetCart() {
-  return async () => {
+  return () => {
     try {
       dispatch(slice.actions.resetCardSuccess("true"));
     } catch (error) {

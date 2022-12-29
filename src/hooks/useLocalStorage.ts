@@ -8,7 +8,7 @@ const encryptKey = "BtWVvTEjuU1BcrOaoGlh9N5wBf1KWvRj";
 export default function useLocalStorage<ValueType>(key: string, defaultValue: ValueType) {
   const [value, setValue] = useState(() => {
     const storedValue = typeof window !== 'undefined' ? localStorage.getItem(key) : null;
-    return storedValue === null ? defaultValue : JSON.parse(cryptoJs.AES.decrypt(storedValue, encryptKey).toString());
+    return storedValue === null ? defaultValue : JSON.parse(cryptoJs.AES.decrypt(storedValue, encryptKey).toString(cryptoJs.enc.Utf8));
   });
 
   useEffect(() => {

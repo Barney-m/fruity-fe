@@ -50,6 +50,12 @@ const other: NavItemType = {
       type: 'item',
       url: '/about-us',
       icon: icons.DeploymentUnitOutlined,
+    },
+    {
+      id: 'store',
+      title: <FormattedMessage id="store" />,
+      type: 'item',
+      url: '/store',
     }
   ]
 };
