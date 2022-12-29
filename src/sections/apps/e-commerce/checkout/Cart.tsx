@@ -157,11 +157,11 @@ const Cart = ({ checkout, onNext, removeProduct, updateQuantity }: CartProps) =>
                               </Stack>
                             </TableCell>
                             <TableCell align="right">
-                              <Increment quantity={row.quantity} itemId={row.itemId} updateQuantity={updateQuantity} />
+                              <Increment quantity={row.quantity} itemId={row.id} updateQuantity={updateQuantity} />
                             </TableCell>
                             <TableCell align="right">
                               <IconButton
-                                onClick={() => removeProduct(row.itemId)}
+                                onClick={() => removeProduct(row.id)}
                                 size="medium"
                                 sx={{ opacity: 0.5, '&:hover': { bgcolor: 'transparent' } }}
                               >

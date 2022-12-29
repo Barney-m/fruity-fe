@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Button, CardContent, CardMedia, Chip, Divider, Grid, Rating, Stack, Typography } from '@mui/material';
 
 // types
-import { ProductCardProps } from '@fruity/types/cart';
+import { CartStateProps, ProductCardProps } from '@fruity/types/cart';
 
 // project import
 import MainCard from '@fruity/components/MainCard';
@@ -45,10 +45,10 @@ const ProductCard = ({
 
   const [productRating] = useState<number | undefined>(rating);
   const [wishlisted, setWishlisted] = useState<boolean>(false);
-  const cart = useSelector((state) => state.cart);
+  const cart: CartStateProps = useSelector((state) => state.cart);
 
   const addCart = () => {
-    dispatch(addProduct({ id, name, image, salePrice, offerPrice, color, size: 8, quantity: 1, description }));
+    dispatch(addProduct({ id, name, image, salePrice, offerPrice, color, size: 8, quantity: 1, description }, cart.checkout.products));
     dispatch(
       openSnackbar({
         open: true,

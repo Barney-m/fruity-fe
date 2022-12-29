@@ -5,7 +5,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { dispatch } from '@fruity/store/index';
 
 // types
-import { Address, DefaultRootStateProps, ProductCardProps } from '@fruity/types/cart';
+import { Address, CartProductStateProps, CartStateProps, DefaultRootStateProps, ProductCardProps } from '@fruity/types/cart';
+import { Products, ProductStateProps } from '@fruity/types/e-commerce';
+import { cloneDeep } from 'lodash';
 
 // ----------------------------------------------------------------------
 
@@ -38,23 +40,31 @@ const slice = createSlice({
 
     // ADD PRODUCT
     addProductSuccess(state, action) {
-      state.checkout.products = action.payload.products;
-      state.checkout.subtotal += action.payload.subtotal;
-      state.checkout.total += action.payload.subtotal;
+      state.checkout.products = action.payload;
+      const subtotal = action.payload?.reduce((acc: number, cur: CartProductStateProps) =>  
+                        acc + (Number(cur.offerPrice ? cur.offerPrice : (cur.salePrice ?? 0)) * (cur.quantity ?? 1)), 0);
+      state.checkout.subtotal = subtotal;
+      state.checkout.total = state.checkout.subtotal;
     },
 
     // REMOVE PRODUCT
     removeProductSuccess(state, action) {
-      state.checkout.products = action.payload.products;
-      state.checkout.subtotal += -action.payload.subtotal;
-      state.checkout.total += -action.payload.subtotal;
+      state.checkout.products = action.payload;
+      const subtotal = action.payload?.reduce((acc: number, cur: CartProductStateProps) =>  
+                        acc + (Number(cur.offerPrice ? cur.offerPrice : (cur.salePrice ?? 0)) * (cur.quantity ?? 1)), 0);
+      state.checkout.subtotal = subtotal;
+      state.checkout.total = state.checkout.subtotal;
     },
 
     // UPDATE PRODUCT
     updateProductSuccess(state, action) {
-      state.checkout.products = action.payload.products;
-      state.checkout.subtotal = state.checkout.subtotal - action.payload.oldSubTotal + action.payload.subtotal;
-      state.checkout.total = state.checkout.total - action.payload.oldSubTotal + action.payload.subtotal;
+      state.checkout.products = action.payload;
+
+      const subtotal = action.payload?.reduce((acc: number, cur: CartProductStateProps) =>  
+                        acc + (Number(cur.offerPrice ? cur.offerPrice : (cur.salePrice ?? 0)) * (cur.quantity ?? 1)), 0);
+
+      state.checkout.subtotal = subtotal;
+      state.checkout.total = state.checkout.subtotal;
     },
 
     // SET STEP
@@ -126,54 +136,55 @@ export default slice.reducer;
 
 // ----------------------------------------------------------------------
 
-export function addProduct(product: ProductCardProps) {
+export function addProduct(product: ProductCardProps, cartProducts: CartProductStateProps[]) {
   return () => {
     try {
-      dispatch(slice.actions.addProductSuccess(product));
+      let productExist = false;
+      const tmpCartProducts = cloneDeep(cartProducts);
+
+      for (const x of tmpCartProducts) {
+        if (product.id === x.id) {
+          x.quantity += 1;
+          productExist = true;
+          break;
+        }
+      }
+
+      if (!productExist) {
+        tmpCartProducts.push(product as CartProductStateProps);
+      }
+
+      dispatch(slice.actions.addProductSuccess(tmpCartProducts));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function removeProduct(id: string | number | undefined, products: ProductCardProps[]) {
+export function removeProduct(id: string | number | undefined, cartProducts: CartProductStateProps[]) {
   return () => {
     try {
-      let product: ProductCardProps | null = null;
-      for (const x of products) {
-        if (x.id === String(id)) {
-          product = x;
-          break;
-        }
-      }
+      const products = cloneDeep(cartProducts);
 
-      if (!product) {
-        throw Error;
-      }
-
-      dispatch(slice.actions.removeProductSuccess(product));
+      dispatch(slice.actions.removeProductSuccess(products.filter((product: CartProductStateProps) => product.id !== Number(id))));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function updateProduct(id: string | number | undefined, quantity: number, products: ProductCardProps[]) {
+export function updateProduct(id: string | number | undefined, quantity: number, products: CartProductStateProps[]) {
   return () => {
     try {
-      let product: ProductCardProps | null = null;
-      for (const x of products) {
-        if (x.id === String(id)) {
-          product = x;
+      let tmpProducts = cloneDeep(products);
+      for (const x of tmpProducts) {
+        if (x.id === Number(id)) {
+          x.quantity = quantity;
           break;
         }
       }
 
-      if (!product) {
-        throw Error;
-      }
-
-      dispatch(slice.actions.updateProductSuccess(product));
+      dispatch(slice.actions.updateProductSuccess(tmpProducts));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

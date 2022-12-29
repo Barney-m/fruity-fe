@@ -8,8 +8,10 @@ import CommonLayout from '@fruity/layout/CommonLayout';
 const Home = Loadable(lazy(() => import('@fruity/pages/home')));
 const AboutUs = Loadable(lazy(() => import('@fruity/pages/about-us')));
 
+// render - e-commerce
 const MainStore = Loadable(lazy(() => import('@fruity/pages/e-commerce')));
 const ProductDetails = Loadable(lazy(() => import('@fruity/pages/e-commerce/product-details')));
+const Checkout = Loadable(lazy(() => import('@fruity/pages/e-commerce/checkout')));
 
 // ==============================|| Public ROUTING ||============================== //
 
@@ -32,6 +34,10 @@ const PublicRoutes = {
     {
       path: 'store/fruit/:id',
       element: <ProductDetails />
+    },
+    {
+      path: 'store/checkout',
+      element: <Checkout />
     }
   ]
 };

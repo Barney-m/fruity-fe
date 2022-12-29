@@ -72,7 +72,7 @@ const ProductDetails = () => {
   }, [id]);
 
   return (
-    <Container>
+    <Container sx={{ my: 5 }}>
       {product && product.id === Number(id) && (
         <Grid container spacing={2}>
           <Grid item xs={12}>
