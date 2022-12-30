@@ -52,8 +52,8 @@ const BillingAddress = ({ checkout, onBack, billingAddressHandler, removeProduct
   }, [checkout.products]);
 
   let addressResult: ReactElement | ReactElement[] = <></>;
-  if (address) {
-    addressResult = address.map((data: Address, index: number) => (
+  if (address.length) {
+    addressResult = address?.map((data: Address, index: number) => (
       <Grid item xs={12} lg={6} key={index}>
         <AddressCard address={data} billingAddressHandler={billingAddressHandler} />
       </Grid>

@@ -87,7 +87,7 @@ function TabPanel({ children, value, index, ...other }: TabsProps) {
 
 const Checkout = () => {
   const theme = useTheme();
-  const cart = useSelector((state: DefaultRootStateProps) => state.cart);
+  const cart: CartStateProps = useSelector((state: any) => state.cart);
   const dispatch = useDispatch();
 
   const isCart = cart.checkout.products && cart.checkout.products.length > 0;

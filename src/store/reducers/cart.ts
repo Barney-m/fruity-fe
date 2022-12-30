@@ -7,7 +7,7 @@ import { dispatch } from '@fruity/store/index';
 // types
 import { Address, CartProductStateProps, CartStateProps, DefaultRootStateProps, ProductCardProps } from '@fruity/types/cart';
 import { Products, ProductStateProps } from '@fruity/types/e-commerce';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, filter } from 'lodash';
 
 // ----------------------------------------------------------------------
 
@@ -142,13 +142,12 @@ export function addProduct(product: ProductCardProps, cartProducts: CartProductS
       let productExist = false;
       const tmpCartProducts = cloneDeep(cartProducts);
 
-      for (const x of tmpCartProducts) {
-        if (product.id === x.id) {
-          x.quantity += 1;
+      tmpCartProducts.forEach((cartProduct) => {
+        if (cartProduct.id === product.id) {
+          cartProduct.quantity += 1;
           productExist = true;
-          break;
         }
-      }
+      })
 
       if (!productExist) {
         tmpCartProducts.push(product as CartProductStateProps);
@@ -166,25 +165,25 @@ export function removeProduct(id: string | number | undefined, cartProducts: Car
     try {
       const products = cloneDeep(cartProducts);
 
-      dispatch(slice.actions.removeProductSuccess(products.filter((product: CartProductStateProps) => product.id !== Number(id))));
+      dispatch(slice.actions.removeProductSuccess(filter(products, (product) => product.id !== Number(id))));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
   };
 }
 
-export function updateProduct(id: string | number | undefined, quantity: number, products: CartProductStateProps[]) {
+export function updateProduct(id: string | number | undefined, quantity: number, cartProducts: CartProductStateProps[]) {
   return () => {
     try {
-      let tmpProducts = cloneDeep(products);
-      for (const x of tmpProducts) {
-        if (x.id === Number(id)) {
-          x.quantity = quantity;
-          break;
-        }
-      }
+      const tmpCartProducts = cloneDeep(cartProducts);
 
-      dispatch(slice.actions.updateProductSuccess(tmpProducts));
+      tmpCartProducts.forEach((cartProduct) => {
+        if (cartProduct.id === id) {
+          cartProduct.quantity = quantity;
+        }
+      })
+
+      dispatch(slice.actions.updateProductSuccess(tmpCartProducts));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }

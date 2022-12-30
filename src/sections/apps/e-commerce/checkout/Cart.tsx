@@ -42,6 +42,12 @@ const Increment = ({ itemId, quantity, updateQuantity }: IncrementProps) => {
   const [value, setValue] = useState(quantity);
   const theme = useTheme();
 
+  useEffect(() => {
+    setValue(quantity);
+
+    return () => setValue(0);
+  }, [quantity]);
+
   const incrementHandler = () => {
     setValue(value - 1);
     updateQuantity(itemId, value - 1);
@@ -136,8 +142,7 @@ const Cart = ({ checkout, onNext, removeProduct, updateQuantity }: CartProps) =>
                                   <Stack spacing={0}>
                                     <Typography
                                       component={Link}
-                                      to={`/apps/e-commerce/product-details/${row.id}`}
-                                      target="_blank"
+                                      to={`/store/fruit/${row.id}`}
                                       variant="subtitle1"
                                       color="textPrimary"
                                       sx={{ textDecoration: 'none' }}
@@ -178,7 +183,7 @@ const Cart = ({ checkout, onNext, removeProduct, updateQuantity }: CartProps) =>
             </Grid>
           </MainCard>
           <Grid item sx={{ textAlign: 'right' }}>
-            <Button color="secondary" component={Link} to="/apps/e-commerce/products" variant="text" startIcon={<LeftOutlined />}>
+            <Button color="secondary" component={Link} to="/store" variant="text" startIcon={<LeftOutlined />}>
               <Typography variant="h6" color="textPrimary">
                 Back to Shopping
               </Typography>

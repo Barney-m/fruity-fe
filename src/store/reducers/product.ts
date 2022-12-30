@@ -244,7 +244,7 @@ export function getProductReviews(id: string | undefined) {
 export function getAddresses(id: string | undefined) {
   return () => {
     try {
-      dispatch(slice.actions.getAddressesSuccess(id));
+      dispatch(slice.actions.getAddressesSuccess([]));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
